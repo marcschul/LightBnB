@@ -11,7 +11,7 @@ $(() => {
     $logInForm.detach();
     $signUpForm.detach();
     $newReservationForm.detach();
-
+    
     switch (item) {
       case 'listings':
         $propertyListings.appendTo($main);
@@ -29,8 +29,9 @@ $(() => {
         $signUpForm.appendTo($main);
         break;
       case 'newReservation':
-        const dataTag = `<h4>${data}</h4>`;
+        let dataTag = `<h4>${data}</h4>`;
         $newReservationForm.appendTo($main);
+        $("#datatag").empty(); 
         $(dataTag).appendTo("#datatag");
         break;
       case 'error': {

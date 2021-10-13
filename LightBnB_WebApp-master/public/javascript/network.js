@@ -38,6 +38,7 @@ function getAllListings(params) {
   });
 }
 
+// trace code execution with mentor
 function getAllReservations() {
   let url = "/api/reservations";
   return $.ajax({
@@ -51,4 +52,12 @@ const submitProperty = function(data) {
     url: "/api/properties",
     data,
   });
+}
+
+const submitReservation = function(data) {
+  return $.ajax({
+    method: "POST",
+    url: "/api/reservations",
+    data,
+  })
 }

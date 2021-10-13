@@ -19,20 +19,7 @@ const users = require('./json/users.json');
  * @param {String} email The email of the user.
  * @return {Promise<{}>} A promise to the user.
  */
-// const getUserWithEmail = function(email) {
-//   let user;
-//   for (const userId in users) {
-//     user = users[userId];
-//     if (user.email.toLowerCase() === email.toLowerCase()) {
-//       break;
-//     } else {
-//       user = null;
-//     }
-//   }
-//   console.log(user);
-//   return Promise.resolve(user);
-// }
-// --------------------------------------------------------
+
 const getUserWithEmail = function(email) { 
   
   return pool
@@ -57,10 +44,7 @@ exports.getUserWithEmail = getUserWithEmail;
  * @param {string} id The id of the user.
  * @return {Promise<{}>} A promise to the user.
  */
-// const getUserWithId = function(id) {
-//   return Promise.resolve(users[id]);
-// }
-// --------------------------------------------------------------
+
 const getUserWithId = function(id) {
 
   return pool
@@ -86,13 +70,7 @@ exports.getUserWithId = getUserWithId;
  * @param {{name: string, password: string, email: string}} user
  * @return {Promise<{}>} A promise to the user.
  */
-// const addUser =  function(user) {
-  // const userId = Object.keys(users).length + 1;
-  // user.id = userId;
-  // users[userId] = user;
-  // return Promise.resolve(user);
-// }
-// ------------------------------------------------------------------
+
 const addUser = function(user) {
 
   return pool
@@ -112,10 +90,7 @@ exports.addUser = addUser;
  * @param {string} guest_id The id of the user.
  * @return {Promise<[{}]>} A promise to the reservations.
  */
-// const getAllReservations = function(guest_id, limit = 10) {
-  // return getAllProperties(null, 2);
-// }
-// -----------------------------------------------------------------
+
 const getAllReservations = function(guest_id, limit = 10) {
   
   return pool
@@ -146,29 +121,7 @@ exports.getAllReservations = getAllReservations;
  * @param {*} limit The number of results to return.
  * @return {Promise<[{}]>}  A promise to the properties.
  */
-// const getAllProperties = function(options, limit = 10) {
-//   const limitedProperties = {};
-//   for (let i = 1; i <= limit; i++) {
-//     limitedProperties[i] = properties[i];
-//   }
-//   console.log(limitedProperties);
-//   return Promise.resolve(limitedProperties);
-// }
-// -----------------------------------------------------------------
-// const getAllProperties = (options, limit = 10) => {
-//   const queryString = `SELECT * FROM properties LIMIT $1;`
 
-//   return pool
-//     .query(
-//       queryString,
-//       [limit])
-//       .then((result) => {
-//         return result.rows;
-//       })
-//     .catch((err) => err.message);
-//   };
-  
-// ------------------------------------------------------------------
 const getAllProperties = function (options, limit = 10) {
   console.log(options);
   // 1
@@ -234,13 +187,7 @@ exports.getAllProperties = getAllProperties;
  * @param {{}} property An object containing all of the property details.
  * @return {Promise<{}>} A promise to the property.
  */
-// const addProperty = function(property) {
-//   const propertyId = Object.keys(properties).length + 1;
-//   property.id = propertyId;
-//   properties[propertyId] = property;
-//   return Promise.resolve(property);
-// }
-// ------------------------------------------
+
 const addProperty = function(property) {
 
   const queryParams = [
@@ -300,3 +247,29 @@ const addProperty = function(property) {
     .catch()
 }
 exports.addProperty = addProperty;
+
+
+const addReservation = function(reservation) {
+  console.log(reservation);
+  /*
+   * Adds a reservation from a specific user to the database
+   */
+  return pool
+    .query(`
+    INSERT INTO reservations (
+      start_date, 
+      end_date, 
+      property_id, 
+      guest_id)
+    VALUES ($1, 
+      $2, 
+      $3, 
+      $4) 
+      RETURNING *;
+  `, [reservation.start_date, reservation.end_date, reservation.property_id, reservation.guest_id])
+  .then((res) => {
+    return res.rows[0]
+  })
+}
+
+exports.addReservation = addReservation;
