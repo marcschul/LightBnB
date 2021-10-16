@@ -13,6 +13,9 @@ $(() => {
     $newReservationForm.detach();
     $updateReservationForm.detach();
     $('#reservation-details').detach();
+    // There are two things we need to do: detach the $newReviewForm variable to take it out of the view, then appropriately add it if the view is called. We'll use the datatag as we've used in other views.
+    // test if we need detach
+    $newReviewForm.detach();
 
     let dataTag = "";
     
@@ -32,6 +35,16 @@ $(() => {
       case 'signUp':
         $signUpForm.appendTo($main);
         break;
+      case 'showReviews':
+        getReviewsByProperty(data)
+        .then(reviews => propertyReviews.addReviews(reviews))
+        $propertyReviews.appendTo($main);
+        break;
+      case 'newReview':
+        dataTag = `<h4>${data}</h4>`;
+        $newReviewForm.appendTo($main);
+        $(dataTag).appendTo("#datatag");
+        break;  
       case 'newReservation':
         dataTag = `<h4>${data}</h4>`;
         $newReservationForm.appendTo($main);
