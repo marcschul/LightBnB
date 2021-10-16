@@ -16,6 +16,7 @@ $(() => {
     // There are two things we need to do: detach the $newReviewForm variable to take it out of the view, then appropriately add it if the view is called. We'll use the datatag as we've used in other views.
     // test if we need detach
     $newReviewForm.detach();
+    $propertyReviews.empty();
 
     let dataTag = "";
     
@@ -62,8 +63,8 @@ $(() => {
         const reservationDetails = `
           <div id="reservation-details">
             <h3>Reservation Details</h3>
-            <h4>Start date: ${moment(data.start_date).format("MMMM DD, YYYY")}</h4>
-            <h4>End date: ${moment(data.end_date).format("MMMM DD, YYYY")}</h4>
+            <h4>Start date: ${moment.utc(data.start_date).format("MMMM DD, YYYY")}</h4>
+            <h4>End date: ${moment.utc(data.end_date).format("MMMM DD, YYYY")}</h4>
           </div>
         `
         // if there's an error message we want to display that as well:

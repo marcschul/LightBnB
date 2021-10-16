@@ -98,6 +98,10 @@ module.exports = function(router, database) {
     .then(reviews => {
       res.send(reviews);
     })
+    .catch((err) => {
+      console.log(err);
+      res.send(err);
+    });
   })
 
   router.post('/reviews/:reservationId', (req, res) => {

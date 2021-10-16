@@ -7,8 +7,8 @@ const pool = new Pool({
   database: 'lightbnb'
 });
 
-const properties = require('./json/properties.json');
-const users = require('./json/users.json');
+// const properties = require('./json/properties.json');
+// const users = require('./json/users.json');
 
 
 /// Users
@@ -127,7 +127,7 @@ const getAllProperties = function (options, limit = 10) {
   const queryParams = [];
   // 2
   let queryString = `
-  SELECT properties.*, avg(property_reviews.rating) as average_rating
+  SELECT properties.*, avg(property_reviews.rating) as average_rating, COUNT(property_reviews.*) as review_count
   FROM properties
   JOIN property_reviews ON properties.id = property_id
   WHERE true 
@@ -270,7 +270,7 @@ exports.addReservation = addReservation;
 // gets all upcoming reservations
 const getUpcomingReservations = function(guest_id, limit = 10) {
   const queryString = `
-  SELECT properties.*, avg(property_reviews.rating) as average_rating, count(property_reviews.rating) as review_count, reservations.id as reservation_id
+  SELECT properties.*, avg(property_reviews.rating) as average_rating, count(property_reviews.rating) as review_count, reservations.id as reservation_id, reservations.start_date as start_date, reservations.end_date as end_date
   FROM reservations
   JOIN properties ON reservations.property_id = properties.id
   JOIN property_reviews ON properties.id = property_reviews.property_id 
@@ -343,12 +343,14 @@ exports.getIndividualReservation = getIndividualReservation;
  *  get reviews by property
  */
 const getReviewsByProperty = function(propertyId) {
+  console.log(propertyId);
   const queryString = `
   SELECT property_reviews.id, property_reviews.rating AS review_rating, property_reviews.message AS review_text, 
   users.name, properties.title AS property_title, reservations.start_date, reservations.end_date
   FROM property_reviews
   JOIN reservations ON reservations.id = property_reviews.reservation_id  
   JOIN properties ON properties.id = property_reviews.property_id
+  JOIN users ON users.id = property_reviews.guest_id
   WHERE properties.id = $1
   ORDER BY reservations.start_date ASC;
 `
