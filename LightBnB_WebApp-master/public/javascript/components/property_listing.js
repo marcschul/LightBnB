@@ -2,10 +2,6 @@ $(() => {
   window.propertyListing = {};
   
   function createListing(property, isReservation) {
-    console.log('propertyDate === ', moment(property.start_date).format('ll'));
-    console.log('property === ', property)
-    console.log('property.start_date === ', property.start_date);
-    console.log('property.end_date === ', property.end_date);
     return `
       <article class="property-listing">
         <section class="property-listing__preview-image">
