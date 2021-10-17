@@ -95,7 +95,17 @@ const getFulfilledReservations = function(guest_id, limit = 10) {
   
   return pool
     .query(`
-    SELECT thumbnail_photo_url,properties.id,title,start_date, end_date,cost_per_night,number_of_bathrooms,number_of_bedrooms,parking_spaces, avg(rating)::NUMERIC as average_rating
+    SELECT thumbnail_photo_url,
+    properties.id,
+    title,
+    start_date, 
+    end_date,
+    cost_per_night,
+    number_of_bathrooms,
+    number_of_bedrooms,
+    parking_spaces,
+    reservations.id as reservation_id, 
+    avg(rating)::NUMERIC as average_rating
     FROM reservations
     JOIN properties ON reservations.property_id = properties.id
     JOIN property_reviews ON properties.id = property_reviews.property_id
@@ -293,7 +303,6 @@ exports.getUpcomingReservations = getUpcomingReservations;
 //  Updates an existing reservation with new information
 //
 const updateReservation = function(reservationData) {
-  console.log('reservationData === ', reservationData);
   // base string
   let queryString = `UPDATE reservations SET `;
   const queryParams = [];

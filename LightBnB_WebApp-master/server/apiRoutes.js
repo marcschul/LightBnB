@@ -95,11 +95,11 @@ module.exports = function(router, database) {
   router.get('/reviews/:propertyId', (req, res) => {
     const propertyId = req.params.propertyId
     database.getReviewsByProperty(propertyId)
-    .then(reviews => {
+    .then((reviews) => {
       res.send(reviews);
     })
     .catch((err) => {
-      console.log(err);
+      console.log('error === ', err);
       res.send(err);
     });
   })

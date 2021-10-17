@@ -13,8 +13,6 @@ $(() => {
     $newReservationForm.detach();
     $updateReservationForm.detach();
     $('#reservation-details').detach();
-    // There are two things we need to do: detach the $newReviewForm variable to take it out of the view, then appropriately add it if the view is called. We'll use the datatag as we've used in other views.
-    // test if we need detach
     $newReviewForm.detach();
     $propertyReviews.empty();
 

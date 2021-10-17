@@ -20,16 +20,17 @@ $(() => {
     event.preventDefault();
     const reviewBody = $('#new-review-body').val();
     const reviewRating = $('#new-review-rating').val();
+    // this is grabbing the property's id, not the reservation's id...
     const reservationId = $('#datatag h4').text();
     // clear our review fields
     $('#new-review-rating').val("");
     $("#new-review-body").val("");
     if (reviewRating && reservationId) {
       getIndividualReservation(reservationId)
-      .then(data => {
+      .then((data) => {
         const dataObj = {...data, reservationId: data.id, message: reviewBody, rating: reviewRating};
         submitReview(dataObj)
-        .then(result => {
+        .then((result) => {
           views_manager.show('listings');
         });
       })
